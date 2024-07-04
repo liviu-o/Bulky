@@ -12,11 +12,12 @@ namespace Bulky.DataAccess.Repository
 {
     public class CategoryRepository : Repository<Category>, ICategoryRepository
     {
-        private readonly ApplicationDbContext _db;
-        public CategoryRepository(ApplicationDbContext db) : base(db) 
+        private ApplicationDbContext _db;
+        public CategoryRepository(ApplicationDbContext db) : base(db)
         {
-            _db = db; 
+            _db = db;
         }
+
         public void Save()
         {
             _db.SaveChanges();
