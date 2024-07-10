@@ -92,7 +92,7 @@ namespace BulkyWeb.Areas.Admin.Controllers
                     }
                
                 _unitOfWork.Save();
-                TempData["success"] = "Product created successfully";
+                TempData["success"] = "Product created/updated successfully";
                 return RedirectToAction("Index");
             }
             return View();

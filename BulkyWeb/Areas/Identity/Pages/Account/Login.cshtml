@@ -50,12 +50,14 @@
                     </form>
                 </section>
             </div>
-            <div class="col-md-12 p-3 text-center">
+            <div class="col-md-12">
                 <section>
                     <p class="divider-text d-flex pt-3">or</p>
+                    <h3>Use another service to log in.</h3>
 
                     @{
-                        if ((Model.ExternalLogins?.Count ?? 0) == 0) {
+                        if ((Model.ExternalLogins?.Count ?? 0) == 0)
+                        {
                             <div>
                                 <p>
                                     There are no external authentication services configured. See this <a href="https://go.microsoft.com/fwlink/?LinkID=532715">
@@ -65,11 +67,13 @@
                                 </p>
                             </div>
                         }
-                        else {
+                        else
+                        {
                             <form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="form-horizontal">
                                 <div>
                                     <p>
-                                        @foreach (var provider in Model.ExternalLogins!) {
+                                        @foreach (var provider in Model.ExternalLogins!)
+                                        {
                                             <button type="submit" class="btn btn-primary" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">@provider.DisplayName</button>
                                         }
                                     </p>
