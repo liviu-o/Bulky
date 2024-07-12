@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Bulky.DataAccess.Repository.IRepository;
 using BulkyWeb.Data;
 using Microsoft.EntityFrameworkCore;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace Bulky.DataAccess.Repository
 {
@@ -18,16 +19,29 @@ namespace Bulky.DataAccess.Repository
         {
             _db = db;
             this.dbSet = _db.Set<T>();
+            //_db.Categories == dbSet
             _db.Products.Include(u => u.Category).Include(u => u.CategoryId);
+
         }
+
         public void Add(T entity)
         {
             dbSet.Add(entity);
         }
 
-        public T Get(Expression<Func<T, bool>> filter, string? includeProperties = null)
+        public T Get(Expression<Func<T, bool>> filter, string? includeProperties = null, bool tracked = false)
         {
-            IQueryable<T> query = dbSet;
+            IQueryable<T> query;
+            if (tracked)
+            {
+                query = dbSet;
+
+            }
+            else
+            {
+                query = dbSet.AsNoTracking();
+            }
+
             query = query.Where(filter);
             if (!string.IsNullOrEmpty(includeProperties))
             {
@@ -38,6 +52,7 @@ namespace Bulky.DataAccess.Repository
                 }
             }
             return query.FirstOrDefault();
+
         }
 
         public IEnumerable<T> GetAll(string? includeProperties = null)
@@ -59,9 +74,9 @@ namespace Bulky.DataAccess.Repository
             dbSet.Remove(entity);
         }
 
-        public void RemoveRange(IEnumerable<T> entities)
+        public void RemoveRange(IEnumerable<T> entity)
         {
-            dbSet.RemoveRange(entities);  
+            dbSet.RemoveRange(entity);
         }
     }
 }
